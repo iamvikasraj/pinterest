@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     @State private var selectedTab: Tab = .home
     
@@ -50,9 +51,9 @@ struct TabContentView: View {
         case .create:
             CreateView()
         case .chat:
-            ChatView()
+            chatView()
         case .profile:
-            ProfileView()
+            profileView()
         }
     }
 }
@@ -79,40 +80,15 @@ struct HomeView: View {
     }
 }
 
-
-
 struct CreateView: View {
     var body: some View {
         VStack {
+            Spacer()
             Text("Create")
                 .font(.largeTitle)
                 .padding()
+            Spacer()
         }
-        .background(.gray)
-        .padding(.vertical, 80)
-    }
-}
-
-struct ChatView: View {
-    var body: some View {
-        VStack {
-            Text("Messages")
-                .font(.largeTitle)
-                .padding()
-        }
-        .background(.gray)
-        .padding(.vertical, 80)
-    }
-}
-
-struct ProfileView: View {
-    var body: some View {
-        VStack {
-            Text("Profile")
-                .font(.largeTitle)
-                .padding()
-        }
-        .background(.gray)
         .padding(.vertical, 80)
     }
 }
@@ -162,11 +138,8 @@ struct BottomNavigationView: View {
         .padding(.bottom, 0)
         .frame(maxWidth: .infinity, alignment: .center)
         .background(.white)
+        .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: -2)
     }
-}
-
-#Preview {
-    ContentView()
 }
 
 // MARK: - Card Components
@@ -197,10 +170,15 @@ struct oneCard: View {
 
 struct user: View {
     var body: some View {
-        Rectangle()
-            .foregroundColor(.clear)
-            .frame(width: 20, height: 20)
+        Image("profile")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 24, height: 24)
             .background(Color(red: 0.96, green: 0, blue: 0))
             .cornerRadius(20)
     }
+}
+
+#Preview {
+    ContentView()
 }

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		32760EA72DF1701800560E6D /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 32760EA62DF1701800560E6D /* RiveRuntime */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		32202C792DEEE0E300207BA4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32760EA72DF1701800560E6D /* RiveRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = pinterest;
 			packageProductDependencies = (
+				32760EA62DF1701800560E6D /* RiveRuntime */,
 			);
 			productName = pinterest;
 			productReference = 32202C6A2DEEE0E100207BA4 /* pinterest.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 32202C612DEEE0E100207BA4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				32760EA52DF1701800560E6D /* XCRemoteSwiftPackageReference "rive-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 32202C6B2DEEE0E100207BA4 /* Products */;
 			projectDirPath = "";
@@ -593,6 +602,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		32760EA52DF1701800560E6D /* XCRemoteSwiftPackageReference "rive-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rive-app/rive-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		32760EA62DF1701800560E6D /* RiveRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 32760EA52DF1701800560E6D /* XCRemoteSwiftPackageReference "rive-ios" */;
+			productName = RiveRuntime;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 32202C622DEEE0E100207BA4 /* Project object */;
 }
