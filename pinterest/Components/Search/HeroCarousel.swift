@@ -1,5 +1,5 @@
 //
-//  CarouselComponents.swift
+//  HeroCarousel.swift
 //  pinterest
 //
 //  Created by Vikas Raj Yadav on 03/06/25.
@@ -43,12 +43,12 @@ struct HeroCarousel: View {
                     if viewModel.currentCarouselPage < viewModel.carouselItems.count {
                         VStack(spacing: 8) {
                             Text(viewModel.carouselItems[viewModel.currentCarouselPage].title)
-                                .font(.system(size: 14, weight: .medium))
+                                .font(Typography.Semantic.carouselTitle)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                             
                             Text(viewModel.carouselItems[viewModel.currentCarouselPage].subtitle)
-                                .font(.system(size: 20, weight: .medium))
+                                .font(Typography.Semantic.carouselSubtitle)
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(.white)
                         }
@@ -94,4 +94,3 @@ struct HeroCarousel: View {
         }
     }
 }
-

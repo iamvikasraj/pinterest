@@ -45,6 +45,25 @@ struct ContentView: View {
                 }
             }
         }
+        .sheet(isPresented: $viewModel.showCreateBottomSheet) {
+            CreateBottomSheet(isPresented: $viewModel.showCreateBottomSheet)
+                .presentationDetents([.height(280)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(CornerRadius.xlarge)
+                .presentationBackgroundInteraction(.disabled)
+        }
+        .sheet(isPresented: $viewModel.showPinDetailSheet) {
+            PinDetailSheet(
+                isPresented: $viewModel.showPinDetailSheet,
+                pinId: viewModel.selectedPinId,
+                imageName: viewModel.selectedPinImageName,
+                sourceFrame: viewModel.sourceFrame
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
+            .presentationCornerRadius(CornerRadius.xlarge)
+            .presentationBackgroundInteraction(.disabled)
+        }
     }
     
     // MARK: - Navigation Destination
@@ -90,56 +109,13 @@ struct TabContentView: View {
                 viewModel.navigate(to: route)
             })
         case .profile:
-            ProfileView(onNavigate: { route in
-                viewModel.navigate(to: route)
-            })
+            ProfileView(
+                onNavigate: { route in
+                    viewModel.navigate(to: route)
+                },
+                contentViewModel: viewModel
+            )
         }
-    }
-}
-
-struct HomeView: View {
-    @StateObject private var viewModel = HomeViewModel()
-    let contentViewModel: ContentViewModel
-    
-    init(viewModel: ContentViewModel) {
-        self.contentViewModel = viewModel
-    }
-    
-    var body: some View {
-        ScrollView {
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 0) {
-                ForEach(viewModel.pins) { pin in
-                    PinCard(
-                        pin: pin,
-                        onMoreTapped: {
-                            contentViewModel.showImageOverlay(imageContent: pin.imageName)
-                        },
-                        onPinTapped: { pinId in
-                            contentViewModel.navigate(to: .pinDetail(pinId: pinId))
-                        }
-                    )
-                }
-            }
-            .padding(.horizontal, 4)
-            .padding(.vertical, 80)
-        }
-        .scrollIndicators(.hidden)
-    }
-}
-
-struct CreateView: View {
-    var body: some View {
-        VStack {
-            Spacer()
-            Text("Create")
-                .font(.largeTitle)
-                .padding()
-            Spacer()
-        }
-        .padding(.vertical, 80)
     }
 }
 

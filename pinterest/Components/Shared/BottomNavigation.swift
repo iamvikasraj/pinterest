@@ -1,5 +1,5 @@
 //
-//  NavigationComponents.swift
+//  BottomNavigation.swift
 //  pinterest
 //
 //  Created by Vikas Raj Yadav on 03/06/25.
@@ -33,7 +33,7 @@ struct BottomNavigationView: View {
             TabButton(
                 imageName: viewModel.selectedTab == .create ? "start-active" : "start",
                 isSelected: viewModel.selectedTab == .create,
-                action: { viewModel.selectTab(.create) }
+                action: { viewModel.showCreateSheet() }
             )
             Spacer()
             
@@ -51,9 +51,9 @@ struct BottomNavigationView: View {
                     viewModel.selectTab(.profile)
                 }
         }
-        .padding(.horizontal, 28)
+        .padding(.horizontal, 60)
         .padding(.top, 10)
-        .padding(.bottom, 0)
+        .padding(.bottom, 10)
         .frame(maxWidth: .infinity, alignment: .center)
         .background(.white)
         .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: -2)
@@ -68,30 +68,16 @@ struct TabButton: View {
     
     var body: some View {
         Image(imageName)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 28, height: 28)
             .onTapGesture {
                 action()
             }
     }
 }
 
-// MARK: - Navigation Tab (for Profile)
-struct NavigationTab: View {
-    let title: String
-    let isSelected: Bool
-    let onTap: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 8) {
-            Text(title)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(.black)
-            
-            Rectangle()
-                .frame(width: isSelected ? 32 : 0, height: 2)
-        }
-        .onTapGesture {
-            onTap()
-        }
-    }
-}
+
+
+
 

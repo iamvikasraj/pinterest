@@ -17,8 +17,7 @@ struct ChatView: View {
                 // Header
                 HStack {
                     Text("Inbox")
-                        .font(.custom("Inter", size: 20))
-                        .fontWeight(.semibold)
+                        .font(Typography.Semantic.pageTitle)
                         .foregroundStyle(.black)
                     
                     Spacer()
@@ -39,14 +38,13 @@ struct ChatView: View {
                 VStack {
                     HStack {
                         Text("Messages")
-                            .font(.custom("Inter", size: 16))
-                            .fontWeight(.semibold)
+                            .font(Typography.Semantic.sectionTitle)
                             .foregroundStyle(.black)
                         
                         Spacer()
                         
                         Text("See all")
-                            .font(.custom("Inter", size: 12))
+                            .font(Typography.Caption.large)
                             .fontWeight(.semibold)
                             .foregroundStyle(.black)
                         
@@ -80,14 +78,13 @@ struct ChatView: View {
                 VStack {
                     HStack {
                         Text("Updates")
-                            .font(.custom("Inter", size: 16))
-                            .fontWeight(.semibold)
+                            .font(Typography.Semantic.sectionTitle)
                             .foregroundStyle(.black)
                         
                         Spacer()
                         
                         Text("See all")
-                            .font(.custom("Inter", size: 12))
+                            .font(Typography.Caption.large)
                             .fontWeight(.semibold)
                             .foregroundStyle(.black)
                         

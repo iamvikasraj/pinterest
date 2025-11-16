@@ -16,7 +16,7 @@ class ProfileViewModel: ObservableObject {
     enum ProfileTab: String, CaseIterable {
         case pins = "Pins"
         case boards = "Boards"
-        case collage = "Collage"
+        case collage = "Collages"
     }
     
     func toggleSearch() {

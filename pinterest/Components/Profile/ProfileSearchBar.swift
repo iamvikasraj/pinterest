@@ -1,42 +1,11 @@
 //
-//  SearchComponents.swift
+//  ProfileSearchBar.swift
 //  pinterest
 //
 //  Created by Vikas Raj Yadav on 03/06/25.
 //
 
 import SwiftUI
-
-// MARK: - Search Bar
-struct SearchBar: View {
-    var body: some View {
-        HStack(alignment: .bottom, spacing: 6) {
-            HStack(alignment: .bottom, spacing: 6) {
-                Image("search")
-                    .foregroundColor(.clear)
-                    .frame(width: 20, height: 20)
-                Text("Search Pinterest")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.38))
-            }
-            .padding(0)
-            .frame(maxWidth: .infinity, alignment: .bottomLeading)
-            
-            Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 20, height: 20)
-                .background(Color(red: 0.85, green: 0.85, blue: 0.85))
-        }
-        .padding(14)
-        .frame(width: 378, alignment: .bottomLeading)
-        .cornerRadius(16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .inset(by: 0.5)
-                .stroke(.black, lineWidth: 1)
-        )
-    }
-}
 
 // MARK: - Profile Search Bar
 struct ProfileSearchBar: View {
@@ -64,7 +33,6 @@ struct ProfileSearchBar: View {
             
             toggleButton
         }
-        .padding(.horizontal, 16)
         .frame(maxWidth: .infinity)
     }
     
@@ -105,15 +73,15 @@ struct ProfileSearchBar: View {
                 TextField("Search", text: $viewModel.searchText)
                     .contentTransition(.numericText())
                     .focused($isTextFieldFocused)
-                    .font(Font.custom("Inter", size: 16))
-                    .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.38))
+                    .font(Typography.Semantic.searchPlaceholder)
+                    .foregroundColor(AppColors.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     .offset(x: -24)
             } else {
                 Text("Search your saved ideas")
                     .contentTransition(.numericText())
-                    .font(Font.custom("Inter", size: 16))
-                    .foregroundColor(Color(red: 0.39, green: 0.39, blue: 0.38))
+                    .font(Typography.Semantic.searchPlaceholder)
+                    .foregroundColor(AppColors.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         }
@@ -136,13 +104,17 @@ struct ProfileSearchBar: View {
     }
     
     private var searchContent: some View {
-        VStack(alignment: .leading, spacing: 34) {
-            searchTitle
-            recentlyViewedSection
+        Group {
+            if viewModel.isSearching {
+                VStack(alignment: .leading, spacing: 34) {
+                    searchTitle
+                    recentlyViewedSection
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 24)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 24)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .opacity(viewModel.isSearching ? 1 : 0)
         .offset(y: viewModel.isSearching ? 0 : 100)
         .animation(springAnimation, value: viewModel.isSearching)
@@ -150,13 +122,13 @@ struct ProfileSearchBar: View {
     
     private var searchTitle: some View {
         Text("Search your Pins")
-            .font(.system(size: 24, weight: .bold))
+            .font(Typography.Semantic.searchTitle)
     }
     
     private var recentlyViewedSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Recently viewed")
-                .font(.custom("Inter", size: 15).weight(.medium))
+                .font(Typography.Body.medium.weight(.medium))
                 .foregroundColor(.black)
             
             recentlyViewedGrid
@@ -180,4 +152,3 @@ struct ProfileSearchBar: View {
         .cornerRadius(10)
     }
 }
-

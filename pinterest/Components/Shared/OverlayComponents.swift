@@ -69,12 +69,12 @@ struct OverlayOptionRow: View {
     var body: some View {
         HStack(spacing: 16) {
             Image(systemName: iconName)
-                .font(.system(size: 16))
+                .font(Typography.Semantic.overlayOption)
                 .foregroundColor(.black)
                 .frame(width: 16, height: 16)
             
             Text(title)
-                .font(.system(size: 16))
+                .font(Typography.Semantic.overlayOption)
                 .foregroundColor(.black)
             
             Spacer()

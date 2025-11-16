@@ -13,7 +13,7 @@ struct UserProfileImage: View {
         Image("profile")
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: 24, height: 24)
+            .frame(width: 28, height: 28)
             .background(Color(red: 0.96, green: 0, blue: 0))
             .cornerRadius(20)
     }

@@ -12,6 +12,11 @@ class ContentViewModel: ObservableObject {
     @Published var selectedTab: Tab = .home
     @Published var showOverlay = false
     @Published var selectedImageContent = ""
+    @Published var showCreateBottomSheet = false
+    @Published var showPinDetailSheet = false
+    @Published var selectedPinId: String = ""
+    @Published var selectedPinImageName: String = ""
+    @Published var sourceFrame: CGRect = .zero
     
     // Navigation stack for in-page navigation
     @Published var navigationPath = NavigationPath()
@@ -29,6 +34,25 @@ class ContentViewModel: ObservableObject {
     
     func hideOverlay() {
         showOverlay = false
+    }
+    
+    func showCreateSheet() {
+        showCreateBottomSheet = true
+    }
+    
+    func hideCreateSheet() {
+        showCreateBottomSheet = false
+    }
+    
+    func showPinDetail(pinId: String, imageName: String, sourceFrame: CGRect = .zero) {
+        selectedPinId = pinId
+        selectedPinImageName = imageName
+        self.sourceFrame = sourceFrame
+        showPinDetailSheet = true
+    }
+    
+    func hidePinDetailSheet() {
+        showPinDetailSheet = false
     }
     
     // Navigation methods

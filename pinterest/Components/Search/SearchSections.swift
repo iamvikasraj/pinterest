@@ -1,5 +1,5 @@
 //
-//  SectionComponents.swift
+//  SearchSections.swift
 //  pinterest
 //
 //  Created by Vikas Raj Yadav on 03/06/25.
@@ -19,12 +19,12 @@ struct FeaturedBoardView: View {
             HStack(alignment: .center, spacing: 10) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
-                        .font(.system(size: 12))
+                        .font(Typography.Caption.large)
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                     
                     Text(bigTitle)
-                        .font(.system(size: 20, weight: .medium))
+                        .font(Typography.Semantic.carouselSubtitle)
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
@@ -63,12 +63,12 @@ struct SearchSectionView: View {
             HStack(alignment: .center, spacing: 10) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
-                        .font(.system(size: 12))
+                        .font(Typography.Caption.large)
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                     
                     Text(bigTitle)
-                        .font(.system(size: 20, weight: .medium))
+                        .font(Typography.Semantic.carouselSubtitle)
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
@@ -97,4 +97,3 @@ struct SearchSectionView: View {
         }
     }
 }
-
