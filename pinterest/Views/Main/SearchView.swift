@@ -83,3 +83,13 @@ struct SearchView: View {
         }
     }
 }
+
+#Preview("Search View") {
+    SearchView()
+}
+
+#Preview("Search View - Dark Mode") {
+    SearchView()
+        .preferredColorScheme(.dark)
+}
+

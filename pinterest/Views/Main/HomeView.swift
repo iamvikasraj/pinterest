@@ -270,6 +270,11 @@ struct HomeView: View {
 }
 
 
-#Preview {
+#Preview("Home View") {
     HomeView(viewModel: ContentViewModel())
+}
+
+#Preview("Home View - Dark Mode") {
+    HomeView(viewModel: ContentViewModel())
+        .preferredColorScheme(.dark)
 }

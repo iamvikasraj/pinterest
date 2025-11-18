@@ -20,3 +20,12 @@ struct CreateView: View {
     }
 }
 
+#Preview("Create View") {
+    CreateView()
+}
+
+#Preview("Create View - Dark Mode") {
+    CreateView()
+        .preferredColorScheme(.dark)
+}
+

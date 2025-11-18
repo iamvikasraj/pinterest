@@ -116,6 +116,11 @@ struct ChatView: View {
     }
 }
 
-#Preview {
+#Preview("Chat View") {
     ChatView()
+}
+
+#Preview("Chat View - Dark Mode") {
+    ChatView()
+        .preferredColorScheme(.dark)
 }

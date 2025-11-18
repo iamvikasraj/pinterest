@@ -254,6 +254,11 @@ struct ProfileView: View {
     }
 }
 
-#Preview {
+#Preview("Profile View") {
     ProfileView()
+}
+
+#Preview("Profile View - Dark Mode") {
+    ProfileView()
+        .preferredColorScheme(.dark)
 }
