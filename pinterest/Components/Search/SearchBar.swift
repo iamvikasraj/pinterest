@@ -24,7 +24,8 @@ struct SearchBar: View {
             Spacer()
             
             // Camera icon on the right
-            Image(systemName: "camera.fill")
+            Image(systemName: "camera")
+                .fontWeight(.regular)
                 .foregroundColor(AppColors.textSecondary)
                 .frame(width: 20, height: 20)
         }
