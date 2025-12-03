@@ -29,11 +29,21 @@ class ContentViewModel: ObservableObject {
     
     func showImageOverlay(imageContent: String) {
         selectedImageContent = imageContent
-        showOverlay = true
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+            showOverlay = true
+        }
     }
     
     func hideOverlay() {
-        showOverlay = false
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            showOverlay = false
+        }
+        // Clear the image content after animation completes
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            if !self.showOverlay {
+                self.selectedImageContent = ""
+            }
+        }
     }
     
     func showCreateSheet() {
@@ -45,14 +55,21 @@ class ContentViewModel: ObservableObject {
     }
     
     func showPinDetail(pinId: String, imageName: String, sourceFrame: CGRect = .zero) {
+        // Set the pin details first
         selectedPinId = pinId
         selectedPinImageName = imageName
         self.sourceFrame = sourceFrame
-        showPinDetailSheet = true
+        
+        // Show with animation for matched geometry effect
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+            showPinDetailSheet = true
+        }
     }
     
     func hidePinDetailSheet() {
-        showPinDetailSheet = false
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            showPinDetailSheet = false
+        }
     }
     
     // Navigation methods

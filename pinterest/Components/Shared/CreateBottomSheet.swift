@@ -14,18 +14,20 @@ struct CreateBottomSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             // Handle bar
-            RoundedRectangle(cornerRadius: 2)
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 40, height: 4)
-                .padding(.top, Spacing.sm)
-                .padding(.bottom, Spacing.lg)
+            Text("Start creating now")
+                .font(Typography.Caption.xs)
+                .foregroundColor(AppColors.textPrimary)
+                .padding(.top, 16)
+                .padding(.bottom, 16)
+        
             
             // Content
-            VStack(spacing: Spacing.xl) {
+            HStack(spacing: Spacing.xl) {
+                
                 // Create Pin option
                 CreateOptionRow(
                     icon: "photo",
-                    title: "Create Pin",
+                    title: "Pin",
                     subtitle: "Add a new Pin to your board"
                 ) {
                     isPresented = false
@@ -34,7 +36,7 @@ struct CreateBottomSheet: View {
                 // Create Board option
                 CreateOptionRow(
                     icon: "square.grid.2x2",
-                    title: "Create Board",
+                    title: "Collage",
                     subtitle: "Organize your Pins"
                 ) {
                     isPresented = false
@@ -43,7 +45,7 @@ struct CreateBottomSheet: View {
                 // Create Idea Pin option
                 CreateOptionRow(
                     icon: "video",
-                    title: "Create Idea Pin",
+                    title: "Board",
                     subtitle: "Share a video or story"
                 ) {
                     isPresented = false
@@ -52,9 +54,9 @@ struct CreateBottomSheet: View {
             .padding(.horizontal, Spacing.lg)
             .padding(.bottom, Spacing.xl)
             
-            Spacer()
+            
         }
-        .frame(maxWidth: .infinity, maxHeight: 280)
+        .frame(maxWidth: .infinity)
         .background(Color.white)
     }
 }
@@ -69,40 +71,54 @@ struct CreateOptionRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: Spacing.lg) {
-                // Icon
-                Image(systemName: icon)
-                    .font(.system(size: 24))
-                    .foregroundColor(AppColors.pinterestRed)
-                    .frame(width: 48, height: 48)
-                    .background(AppColors.backgroundSecondary)
-                    .cornerRadius(CornerRadius.medium)
-                
                 // Text
-                VStack(alignment: .leading, spacing: Spacing.xs) {
-                    Text(title)
-                        .font(Typography.Semantic.cardTitle)
-                        .foregroundColor(AppColors.textPrimary)
+                VStack(alignment: .center, spacing: Spacing.xs) {
+                    Image(systemName: icon)
+                        .font(.system(size: 16))
+                        .frame(width: 48, height: 48)
+                        .background(AppColors.backgroundSecondary)
+                        .cornerRadius(CornerRadius.medium)
                     
-                    Text(subtitle)
-                        .font(Typography.Caption.large)
-                        .foregroundColor(AppColors.textSecondary)
+                    Text(title)
+                        .font(Typography.Caption.xs)
+                        .foregroundColor(AppColors.textPrimary)
                 }
-                
-                Spacer()
-                
-                // Chevron
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14))
-                    .foregroundColor(AppColors.textTertiary)
             }
             .padding(Spacing.lg)
             .background(Color.white)
             .cornerRadius(CornerRadius.large)
-            .overlay(
-                RoundedRectangle(cornerRadius: CornerRadius.large)
-                    .stroke(AppColors.borderGray, lineWidth: 1)
-            )
         }
     }
 }
 
+// MARK: - Previews
+#Preview("Create Bottom Sheet") {
+    struct PreviewWrapper: View {
+        @State private var isPresented = true
+        
+        var body: some View {
+            ZStack {
+                Color.gray.opacity(0.1)
+                    .ignoresSafeArea()
+                
+                VStack {
+                    Spacer()
+                    CreateBottomSheet(isPresented: $isPresented)
+                }
+            }
+        }
+    }
+    
+    return PreviewWrapper()
+}
+
+#Preview("Create Option Row") {
+    CreateOptionRow(
+        icon: "photo",
+        title: "Create Pin",
+        subtitle: "Add a new Pin to your board"
+    ) {
+        print("Create Pin tapped")
+    }
+    .padding()
+}

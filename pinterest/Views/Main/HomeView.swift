@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     let contentViewModel: ContentViewModel
+    let pinImageNamespace: Namespace.ID
     @State private var selectedSegment: HomeSegment = .all
     @State private var transitionDirection: TransitionDirection = .none
     
@@ -23,8 +24,9 @@ struct HomeView: View {
         case forward, backward, none
     }
     
-    init(viewModel: ContentViewModel) {
+    init(viewModel: ContentViewModel, pinImageNamespace: Namespace.ID) {
         self.contentViewModel = viewModel
+        self.pinImageNamespace = pinImageNamespace
     }
     
     var body: some View {
@@ -32,11 +34,11 @@ struct HomeView: View {
             // Top Segment Navigation
             segmentNavigation
             
-            // Segment Content with swipe gesture
+            // Segment Content with swipe gesture (disabled when pin detail is shown)
             segmentContent
                 .id(selectedSegment)
                 .simultaneousGesture(
-                    DragGesture(minimumDistance: 20)
+                    !contentViewModel.showPinDetailSheet ? DragGesture(minimumDistance: 20)
                         .onEnded { value in
                             let horizontalAmount = value.translation.width
                             let verticalAmount = abs(value.translation.height)
@@ -52,7 +54,7 @@ struct HomeView: View {
                                     switchToNextSegment()
                                 }
                             }
-                        }
+                        } : nil
                 )
         }
     }
@@ -62,7 +64,7 @@ struct HomeView: View {
         let nextIndex = currentIndex + 1
         if nextIndex < HomeSegment.allCases.count {
             transitionDirection = .forward
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            withAnimation(.easeInOut(duration: 0.3)) {
                 selectedSegment = HomeSegment.allCases[nextIndex]
             }
         }
@@ -73,7 +75,7 @@ struct HomeView: View {
         let previousIndex = currentIndex - 1
         if previousIndex >= 0 {
             transitionDirection = .backward
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            withAnimation(.easeInOut(duration: 0.3)) {
                 selectedSegment = HomeSegment.allCases[previousIndex]
             }
         }
@@ -85,26 +87,20 @@ struct HomeView: View {
         case .all:
             allSegmentContent
                 .transition(.asymmetric(
-                    insertion: .move(edge: transitionDirection == .forward ? .trailing : .leading)
-                        .combined(with: .opacity),
+                    insertion: .move(edge: transitionDirection == .forward ? .trailing : .leading),
                     removal: .move(edge: transitionDirection == .forward ? .leading : .trailing)
-                        .combined(with: .opacity)
                 ))
         case .octavia:
             octaviaSegmentContent
                 .transition(.asymmetric(
-                    insertion: .move(edge: transitionDirection == .forward ? .trailing : .leading)
-                        .combined(with: .opacity),
+                    insertion: .move(edge: transitionDirection == .forward ? .trailing : .leading),
                     removal: .move(edge: transitionDirection == .forward ? .leading : .trailing)
-                        .combined(with: .opacity)
                 ))
         case .landscape:
             landscapeSegmentContent
                 .transition(.asymmetric(
-                    insertion: .move(edge: transitionDirection == .forward ? .trailing : .leading)
-                        .combined(with: .opacity),
+                    insertion: .move(edge: transitionDirection == .forward ? .trailing : .leading),
                     removal: .move(edge: transitionDirection == .forward ? .leading : .trailing)
-                        .combined(with: .opacity)
                 ))
         }
     }
@@ -117,6 +113,8 @@ struct HomeView: View {
                     ForEach(Array(viewModel.pins.enumerated()).filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
                         PinCard(
                             pin: pin,
+                            namespace: pinImageNamespace,
+                            selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
                                 contentViewModel.showImageOverlay(imageContent: pin.imageName)
                             },
@@ -132,6 +130,8 @@ struct HomeView: View {
                     ForEach(Array(viewModel.pins.enumerated()).filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
                         PinCard(
                             pin: pin,
+                            namespace: pinImageNamespace,
+                            selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
                                 contentViewModel.showImageOverlay(imageContent: pin.imageName)
                             },
@@ -163,6 +163,8 @@ struct HomeView: View {
                         ForEach(Array(viewModel.pins.prefix(6).enumerated()).filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
                             PinCard(
                                 pin: pin,
+                                namespace: pinImageNamespace,
+                                selectedPinId: contentViewModel.selectedPinId,
                                 onMoreTapped: {
                                     contentViewModel.showImageOverlay(imageContent: pin.imageName)
                                 },
@@ -178,6 +180,8 @@ struct HomeView: View {
                         ForEach(Array(viewModel.pins.prefix(6).enumerated()).filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
                             PinCard(
                                 pin: pin,
+                                namespace: pinImageNamespace,
+                                selectedPinId: contentViewModel.selectedPinId,
                                 onMoreTapped: {
                                     contentViewModel.showImageOverlay(imageContent: pin.imageName)
                                 },
@@ -210,6 +214,8 @@ struct HomeView: View {
                         ForEach(Array(viewModel.pins.suffix(9).enumerated()).filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
                             PinCard(
                                 pin: pin,
+                                namespace: pinImageNamespace,
+                                selectedPinId: contentViewModel.selectedPinId,
                                 onMoreTapped: {
                                     contentViewModel.showImageOverlay(imageContent: pin.imageName)
                                 },
@@ -225,6 +231,8 @@ struct HomeView: View {
                         ForEach(Array(viewModel.pins.suffix(9).enumerated()).filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
                             PinCard(
                                 pin: pin,
+                                namespace: pinImageNamespace,
+                                selectedPinId: contentViewModel.selectedPinId,
                                 onMoreTapped: {
                                     contentViewModel.showImageOverlay(imageContent: pin.imageName)
                                 },
@@ -255,7 +263,7 @@ struct HomeView: View {
                                let newIndex = HomeSegment.allCases.firstIndex(of: segment) {
                                 transitionDirection = newIndex > currentIndex ? .forward : .backward
                             }
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            withAnimation(.easeInOut(duration: 0.3)) {
                                 selectedSegment = segment
                             }
                         }
@@ -271,10 +279,22 @@ struct HomeView: View {
 
 
 #Preview("Home View") {
-    HomeView(viewModel: ContentViewModel())
+    struct PreviewWrapper: View {
+        @Namespace private var namespace
+        var body: some View {
+            HomeView(viewModel: ContentViewModel(), pinImageNamespace: namespace)
+        }
+    }
+    return PreviewWrapper()
 }
 
 #Preview("Home View - Dark Mode") {
-    HomeView(viewModel: ContentViewModel())
-        .preferredColorScheme(.dark)
+    struct PreviewWrapper: View {
+        @Namespace private var namespace
+        var body: some View {
+            HomeView(viewModel: ContentViewModel(), pinImageNamespace: namespace)
+                .preferredColorScheme(.dark)
+        }
+    }
+    return PreviewWrapper()
 }

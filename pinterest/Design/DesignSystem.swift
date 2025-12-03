@@ -35,6 +35,7 @@ struct Typography {
         static let large = Font.system(size: 12, weight: .regular)
         static let medium = Font.system(size: 12, weight: .regular)
         static let small = Font.system(size: 12, weight: .regular)
+        static let xs = Font.system(size: 10, weight: .semibold)
     }
     
     // MARK: - Label Styles

@@ -14,30 +14,30 @@ struct BottomOverlayView: View {
     
     var body: some View {
         GeometryReader { geometry in
+            let sheetHeight: CGFloat = 400 // Approximate height of the sheet
+            
             ZStack(alignment: .bottom) {
                 // Bottom Sheet
+                
+                // Image - only show if imageContent is not empty
+                if !imageContent.isEmpty {
+                    Image(imageContent)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 80)
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                        .offset(y: -300)
+                        .zIndex(1)
+                        .scaleEffect(isPresented ? 1.0 : 0.0)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPresented)
+                }
+                
+                
                 VStack(spacing: 0) {
-                    // Handle bar
-                    RoundedRectangle(cornerRadius: 3)
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 40, height: 6)
-                        .padding(.top, 12)
-                    
-                    // Image positioned at the top with half outside effect
-                    VStack {
-                        Image(imageContent)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 80, height: 80)
-                            .clipped()
-                            .cornerRadius(16)
-                            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
-                            .offset(y: -40) // Half outside the sheet
-                    }
-                    .padding(.top, 20)
-                    
                     // Options section
                     VStack(spacing: 0) {
+                        // Half outside the sheet
                         OverlayOptionRow(iconName: "square.and.arrow.up", title: "Share")
                         OverlayOptionRow(iconName: "bookmark", title: "Save")
                         OverlayOptionRow(iconName: "eye.slash", title: "Hide")
@@ -45,18 +45,19 @@ struct BottomOverlayView: View {
                         OverlayOptionRow(iconName: "xmark.circle", title: "Stop seeing similar pins")
                         OverlayOptionRow(iconName: "exclamationmark.triangle", title: "Report")
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
+                    .padding(.horizontal, 32)
+                    .padding(.top, 40)
                     .padding(.bottom, 30)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.white)
                 .cornerRadius(24, corners: [.topLeft, .topRight])
                 .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: -5)
-                .offset(y: isPresented ? 0 : geometry.size.height + 100)
-                .animation(.spring(response: 0.6, dampingFraction: 0.8, blendDuration: 0), value: isPresented)
+                .offset(y: isPresented ? 0 : sheetHeight)
+                .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPresented)
             }
-            .ignoresSafeArea(.all)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            .ignoresSafeArea(.container, edges: .bottom)
         }
     }
 }
@@ -88,3 +89,53 @@ struct OverlayOptionRow: View {
     }
 }
 
+// MARK: - Previews
+#Preview("Bottom Overlay View - Shown") {
+    struct PreviewWrapper: View {
+        @State private var isPresented = true
+        
+        var body: some View {
+            ZStack {
+                Color.gray.opacity(0.3)
+                    .ignoresSafeArea()
+                
+                BottomOverlayView(
+                    isPresented: $isPresented,
+                    imageContent: "one"
+                )
+            }
+        }
+    }
+    
+    return PreviewWrapper()
+}
+
+#Preview("Bottom Overlay View - Hidden") {
+    struct PreviewWrapper: View {
+        @State private var isPresented = false
+        
+        var body: some View {
+            ZStack {
+                Color.gray.opacity(0.3)
+                    .ignoresSafeArea()
+                
+                BottomOverlayView(
+                    isPresented: $isPresented,
+                    imageContent: "two"
+                )
+            }
+        }
+    }
+    
+    return PreviewWrapper()
+}
+
+#Preview("Overlay Option Row") {
+    VStack(spacing: 0) {
+        OverlayOptionRow(iconName: "square.and.arrow.up", title: "Share")
+        OverlayOptionRow(iconName: "bookmark", title: "Save")
+        OverlayOptionRow(iconName: "eye.slash", title: "Hide")
+    }
+    .padding()
+    .background(Color.white)
+}
