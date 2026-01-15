@@ -59,9 +59,11 @@ struct UpdateCard: View {
     var body: some View {
         HStack {
             ZStack {
-                Image(update.imageName)
-                    .foregroundColor(.gray)
-                    .font(.title2)
+                if !update.imageName.isEmpty {
+                    Image(update.imageName)
+                        .foregroundColor(.gray)
+                        .font(.title2)
+                }
             }
             .frame(width: 46, height: 64)
             .background(Color(red: 0.91, green: 0.9, blue: 0.88))

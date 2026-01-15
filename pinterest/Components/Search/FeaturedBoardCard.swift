@@ -17,26 +17,44 @@ struct FeaturedBoardCard: View {
             // Card Preview Section with Images
             HStack(alignment: .top, spacing: 2) {
                 // Main large image
-                Image(board.mainImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(minWidth: 140, maxHeight: .infinity)
-                    .clipped()
+                if !board.mainImage.isEmpty {
+                    Image(board.mainImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(minWidth: 140, maxHeight: .infinity)
+                        .clipped()
+                } else {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(minWidth: 140, maxHeight: .infinity)
+                }
                 
                 VStack(alignment: .leading, spacing: 2) {
                     // Top right small image
-                    Image(board.smallImages[0])
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 70, maxHeight: 70)
-                        .clipped()
+                    if board.smallImages.count > 0 && !board.smallImages[0].isEmpty {
+                        Image(board.smallImages[0])
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: 70, maxHeight: 70)
+                            .clipped()
+                    } else {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(maxWidth: 70, maxHeight: 70)
+                    }
                     
                     // Bottom right small image
-                    Image(board.smallImages[1])
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: 70, maxHeight: .infinity)
-                        .clipped()
+                    if board.smallImages.count > 1 && !board.smallImages[1].isEmpty {
+                        Image(board.smallImages[1])
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: 70, maxHeight: .infinity)
+                            .clipped()
+                    } else {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(maxWidth: 70, maxHeight: .infinity)
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }

@@ -89,10 +89,12 @@ struct CreateOptionRow: View {
                             .fill(AppColors.backgroundSecondary)
                             .frame(width: 72, height: 72)
                         
-                        Image(icon)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
+                        if !icon.isEmpty {
+                            Image(icon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
+                        }
                     }
                     
                     Text(title)

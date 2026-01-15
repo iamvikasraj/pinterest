@@ -166,15 +166,23 @@ struct ProfileView: View {
             // Sample pins with labels
             ForEach(samplePins, id: \.id) { pin in
                 VStack(alignment: .leading, spacing: Spacing.xs) {
-                    let imageSize = getImageSize(named: pin.imageName)
-                    let aspectRatio = imageSize.height / imageSize.width
-                    
-                    Image(pin.imageName)
-                        .resizable()
-                        .aspectRatio(aspectRatio, contentMode: .fit)
-                        .frame(maxWidth: .infinity)
-                        .clipped()
-                        .cornerRadius(CornerRadius.medium)
+                    if !pin.imageName.isEmpty {
+                        let imageSize = getImageSize(named: pin.imageName)
+                        let aspectRatio = imageSize.height / imageSize.width
+                        
+                        Image(pin.imageName)
+                            .resizable()
+                            .aspectRatio(aspectRatio, contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                            .clipped()
+                            .cornerRadius(CornerRadius.medium)
+                    } else {
+                        Rectangle()
+                            .fill(AppColors.backgroundSecondary)
+                            .aspectRatio(0.75, contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(CornerRadius.medium)
+                    }
                     
                     Text(pin.title)
                         .font(Typography.Caption.large)

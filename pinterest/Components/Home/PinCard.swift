@@ -20,25 +20,34 @@ struct PinCard: View {
     
     var body: some View {
         VStack(alignment: .trailing, spacing: 0) {
-            Image(pin.imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .background(Color(red: 0.73, green: 0.73, blue: 0.73))
-                .cornerRadius(16)
-                .clipped()
-                .matchedGeometryEffect(id: pin.id.uuidString, in: namespace)
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear
-                            .preference(key: PinCardFramePreferenceKey.self, value: geometry.frame(in: .global))
-                    }
-                )
-                .onPreferenceChange(PinCardFramePreferenceKey.self) { frame in
-                    cardFrame = frame
+            Group {
+                if !pin.imageName.isEmpty {
+                    Image(pin.imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .background(Color(red: 0.73, green: 0.73, blue: 0.73))
+                        .cornerRadius(16)
+                        .clipped()
+                        .matchedGeometryEffect(id: pin.id.uuidString, in: namespace)
+                } else {
+                    // Placeholder when image name is empty
+                    Rectangle()
+                        .fill(Color(red: 0.73, green: 0.73, blue: 0.73))
+                        .cornerRadius(16)
                 }
-                .onTapGesture {
-                    onPinTapped?(pin.id.uuidString, pin.imageName, cardFrame)
+            }
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: PinCardFramePreferenceKey.self, value: geometry.frame(in: .global))
                 }
+            )
+            .onPreferenceChange(PinCardFramePreferenceKey.self) { frame in
+                cardFrame = frame
+            }
+            .onTapGesture {
+                onPinTapped?(pin.id.uuidString, pin.imageName, cardFrame)
+            }
             
             // Pin icon overlay in bottom-right corner
             Image("more")

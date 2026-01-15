@@ -33,15 +33,17 @@ struct PinDetailSheet: View {
                 VStack(spacing: 0) {
                     // Pin Image with matched geometry effect - full width with 10px padding
                     // Place image outside ScrollView for better matched geometry effect
-                    Image(imageName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: geometry.size.width - 20)
-                        .cornerRadius(16)
-                        .matchedGeometryEffect(id: pinId, in: namespace, isSource: false)
-                        .padding(.horizontal, 10)
-                        .padding(.top, Spacing.lg)
-                        .opacity(isPresented ? 1 : 0)
+                    if !imageName.isEmpty {
+                        Image(imageName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: geometry.size.width - 20)
+                            .cornerRadius(16)
+                            .matchedGeometryEffect(id: pinId, in: namespace, isSource: false)
+                            .padding(.horizontal, 10)
+                            .padding(.top, Spacing.lg)
+                            .opacity(isPresented ? 1 : 0)
+                    }
                         .gesture(
                             DragGesture(minimumDistance: 10)
                                 .onChanged { value in
