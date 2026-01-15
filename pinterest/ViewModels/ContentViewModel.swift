@@ -47,11 +47,15 @@ class ContentViewModel: ObservableObject {
     }
     
     func showCreateSheet() {
-        showCreateBottomSheet = true
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            showCreateBottomSheet = true
+        }
     }
     
     func hideCreateSheet() {
-        showCreateBottomSheet = false
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            showCreateBottomSheet = false
+        }
     }
     
     func showPinDetail(pinId: String, imageName: String, sourceFrame: CGRect = .zero) {

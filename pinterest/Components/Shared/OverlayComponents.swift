@@ -45,7 +45,6 @@ struct BottomOverlayView: View {
                         OverlayOptionRow(iconName: "xmark.circle", title: "Stop seeing similar pins")
                         OverlayOptionRow(iconName: "exclamationmark.triangle", title: "Report")
                     }
-                    .padding(.horizontal, 32)
                     .padding(.top, 40)
                     .padding(.bottom, 30)
                 }

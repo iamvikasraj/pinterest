@@ -32,6 +32,7 @@ struct Typography {
     
     // MARK: - Caption Styles
     struct Caption {
+        static let xlarge = Font.system(size: 15, weight: .medium)
         static let large = Font.system(size: 12, weight: .regular)
         static let medium = Font.system(size: 12, weight: .regular)
         static let small = Font.system(size: 12, weight: .regular)

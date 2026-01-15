@@ -44,11 +44,14 @@ struct ContentView: View {
                                 }
                             }
                         
-                        BottomOverlayView(
-                            isPresented: $viewModel.showOverlay,
-                            imageContent: viewModel.selectedImageContent
-                        )
-                        .allowsHitTesting(viewModel.showOverlay)
+                        // Only render BottomOverlayView when imageContent is not empty
+                        if !viewModel.selectedImageContent.isEmpty {
+                            BottomOverlayView(
+                                isPresented: $viewModel.showOverlay,
+                                imageContent: viewModel.selectedImageContent
+                            )
+                            .allowsHitTesting(viewModel.showOverlay)
+                        }
                     }
                 }
                 
@@ -63,14 +66,24 @@ struct ContentView: View {
                 .opacity(viewModel.showPinDetailSheet ? 1 : 0)
                 .allowsHitTesting(viewModel.showPinDetailSheet)
                 .zIndex(viewModel.showPinDetailSheet ? 1000 : -1)
+                
+                // Create Bottom Sheet Overlay - Keep in hierarchy for slide animation
+                ZStack {
+                    Color.black.opacity(viewModel.showCreateBottomSheet ? 0.3 : 0)
+                        .ignoresSafeArea()
+                        .animation(.easeInOut(duration: 0.3), value: viewModel.showCreateBottomSheet)
+                        .onTapGesture {
+                            if viewModel.showCreateBottomSheet {
+                                viewModel.hideCreateSheet()
+                            }
+                        }
+                    
+                    CreateBottomSheet(isPresented: $viewModel.showCreateBottomSheet)
+                        .allowsHitTesting(viewModel.showCreateBottomSheet)
+                }
+                .opacity(viewModel.showCreateBottomSheet ? 1 : 0)
+                .zIndex(999)
             }
-        }
-        .sheet(isPresented: $viewModel.showCreateBottomSheet) {
-            CreateBottomSheet(isPresented: $viewModel.showCreateBottomSheet)
-                .presentationDetents([.height(180)])
-                .presentationDragIndicator(.visible)
-                .presentationCornerRadius(CornerRadius.xlarge)
-                .presentationBackgroundInteraction(.disabled)
         }
     }
     
