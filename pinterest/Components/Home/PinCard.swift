@@ -36,6 +36,14 @@ struct PinCard: View {
                         .cornerRadius(16)
                 }
             }
+            .frame(maxWidth: .infinity)
+            .apply { view in
+                if let fixedHeight = pin.fixedHeight {
+                    view.frame(height: fixedHeight)
+                } else {
+                    view.aspectRatio(aspectRatio, contentMode: .fit)
+                }
+            }
             .background(
                 GeometryReader { geometry in
                     Color.clear
@@ -56,7 +64,7 @@ struct PinCard: View {
                     onMoreTapped()
                 }
         }
-        .aspectRatio(aspectRatio, contentMode: .fit)
+        .frame(maxWidth: .infinity)
         .onAppear {
             loadImageAspectRatio()
         }
@@ -77,6 +85,13 @@ struct PinCard: View {
         let width = image.size.width / image.scale
         let height = image.size.height / image.scale
         aspectRatio = height / width
+    }
+}
+
+// MARK: - View Extension
+extension View {
+    func apply<T: View>(@ViewBuilder _ transform: (Self) -> T) -> T {
+        transform(self)
     }
 }
 

@@ -193,10 +193,26 @@ struct HomeView: View {
     }
     
     private var dummyOctaviaPins: [(offset: Int, element: Pin)] {
-        (0..<12).enumerated().map { index, _ in
-            // Random aspect ratio between 0.75 and 2.0 (typical Pinterest range)
-            let randomAspectRatio = Double.random(in: 0.75...2.0)
-            return (offset: index, element: Pin(imageName: "", title: "Octavia Pin \(index + 1)", aspectRatio: randomAspectRatio))
+        // Fixed heights (halved): 177pt (small), 268pt (medium), 316pt (large)
+        // Pattern: large → medium → small → large → medium → small (repeating)
+        let heights: [CGFloat] = [
+            316, // Large
+            268, // Medium
+            177, // Small
+            316, // Large
+            268, // Medium
+            177, // Small
+            316, // Large
+            268, // Medium
+            177, // Small
+            316, // Large
+            268, // Medium
+            177  // Small
+        ]
+        
+        return (0..<12).enumerated().map { index, _ in
+            let height = index < heights.count ? heights[index] : 268
+            return (offset: index, element: Pin(imageName: "", title: "Octavia Pin \(index + 1)", fixedHeight: height))
         }
     }
     
@@ -244,10 +260,26 @@ struct HomeView: View {
     }
     
     private var dummyLandscapePins: [(offset: Int, element: Pin)] {
-        (0..<12).enumerated().map { index, _ in
-            // Random aspect ratio between 0.75 and 2.0 (typical Pinterest range)
-            let randomAspectRatio = Double.random(in: 0.75...2.0)
-            return (offset: index, element: Pin(imageName: "", title: "Landscape Pin \(index + 1)", aspectRatio: randomAspectRatio))
+        // Fixed heights (halved): 177pt (small), 268pt (medium), 316pt (large)
+        // Pattern: large → medium → small → large → medium → small (repeating)
+        let heights: [CGFloat] = [
+            316, // Large
+            268, // Medium
+            177, // Small
+            316, // Large
+            268, // Medium
+            177, // Small
+            316, // Large
+            268, // Medium
+            177, // Small
+            316, // Large
+            268, // Medium
+            177  // Small
+        ]
+        
+        return (0..<12).enumerated().map { index, _ in
+            let height = index < heights.count ? heights[index] : 268
+            return (offset: index, element: Pin(imageName: "", title: "Landscape Pin \(index + 1)", fixedHeight: height))
         }
     }
     
