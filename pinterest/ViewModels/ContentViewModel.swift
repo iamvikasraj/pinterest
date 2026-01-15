@@ -28,6 +28,8 @@ class ContentViewModel: ObservableObject {
     }
     
     func showImageOverlay(imageContent: String) {
+        // Guard against empty image names
+        guard !imageContent.isEmpty else { return }
         selectedImageContent = imageContent
         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
             showOverlay = true
@@ -59,6 +61,8 @@ class ContentViewModel: ObservableObject {
     }
     
     func showPinDetail(pinId: String, imageName: String, sourceFrame: CGRect = .zero) {
+        // Guard against empty image names
+        guard !imageName.isEmpty else { return }
         // Set the pin details first
         selectedPinId = pinId
         selectedPinImageName = imageName

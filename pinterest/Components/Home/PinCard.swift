@@ -71,9 +71,21 @@ struct PinCard: View {
     }
     
     private func loadImageAspectRatio() {
+        // Use pin's fixedHeight if available (converted to aspect ratio based on card width ~177.5pt)
+        if let fixedHeight = pin.fixedHeight {
+            aspectRatio = fixedHeight / 177.5
+            return
+        }
+        
         // Use pin's aspectRatio if available
         if let pinAspectRatio = pin.aspectRatio {
             aspectRatio = pinAspectRatio
+            return
+        }
+        
+        // Guard against empty image names
+        guard !pin.imageName.isEmpty else {
+            aspectRatio = 1.5
             return
         }
         

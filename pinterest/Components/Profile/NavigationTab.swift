@@ -16,7 +16,7 @@ struct NavigationTab: View {
     var tabId: String = ""
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
             Text(title)
                 .font(Typography.Semantic.navItem)
                 .foregroundColor(isSelected ? AppColors.textPrimary : AppColors.textSecondary)
@@ -41,6 +41,7 @@ struct NavigationTab: View {
                 }
             }
         }
+        .fixedSize(horizontal: true, vertical: false)
         .onTapGesture {
             onTap()
         }

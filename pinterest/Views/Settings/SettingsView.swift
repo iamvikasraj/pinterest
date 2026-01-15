@@ -30,11 +30,6 @@ struct SettingsView: View {
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.large)
-        .navigationDestination(for: Route.self) { route in
-            if route == .editProfile {
-                EditProfileView()
-            }
-        }
     }
 }
 

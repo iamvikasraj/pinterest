@@ -117,10 +117,14 @@ struct HomeView: View {
                             namespace: pinImageNamespace,
                             selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
-                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                if !pin.imageName.isEmpty {
+                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                }
                             },
                             onPinTapped: { pinId, imageName, frame in
-                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                if !imageName.isEmpty {
+                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                }
                             }
                         )
                     }
@@ -134,10 +138,14 @@ struct HomeView: View {
                             namespace: pinImageNamespace,
                             selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
-                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                if !pin.imageName.isEmpty {
+                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                }
                             },
                             onPinTapped: { pinId, imageName, frame in
-                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                if !imageName.isEmpty {
+                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                }
                             }
                         )
                     }
@@ -160,10 +168,14 @@ struct HomeView: View {
                             namespace: pinImageNamespace,
                             selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
-                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                if !pin.imageName.isEmpty {
+                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                }
                             },
                             onPinTapped: { pinId, imageName, frame in
-                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                if !imageName.isEmpty {
+                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                }
                             }
                         )
                     }
@@ -177,10 +189,14 @@ struct HomeView: View {
                             namespace: pinImageNamespace,
                             selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
-                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                if !pin.imageName.isEmpty {
+                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                }
                             },
                             onPinTapped: { pinId, imageName, frame in
-                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                if !imageName.isEmpty {
+                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                }
                             }
                         )
                     }
@@ -227,10 +243,14 @@ struct HomeView: View {
                             namespace: pinImageNamespace,
                             selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
-                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                if !pin.imageName.isEmpty {
+                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                }
                             },
                             onPinTapped: { pinId, imageName, frame in
-                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                if !imageName.isEmpty {
+                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                }
                             }
                         )
                     }
@@ -244,10 +264,14 @@ struct HomeView: View {
                             namespace: pinImageNamespace,
                             selectedPinId: contentViewModel.selectedPinId,
                             onMoreTapped: {
-                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                if !pin.imageName.isEmpty {
+                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                                }
                             },
                             onPinTapped: { pinId, imageName, frame in
-                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                if !imageName.isEmpty {
+                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                                }
                             }
                         )
                     }

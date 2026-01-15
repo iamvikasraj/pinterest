@@ -26,14 +26,14 @@ struct RootView: View {
             }
         }
         .onAppear {
-            // Show splash for 2.5 seconds, then fade out
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            // Animation completes at 1.0 seconds, then remove splash
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 withAnimation {
                     splashOpacity = 0
                 }
                 
                 // Remove splash view after fade animation completes
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     showSplash = false
                 }
             }

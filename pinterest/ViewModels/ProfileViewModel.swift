@@ -13,7 +13,7 @@ class ProfileViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var selectedTab: ProfileTab = .pins
     
-    enum ProfileTab: String, CaseIterable {
+    enum ProfileTab: String, CaseIterable, Hashable {
         case pins = "Pins"
         case boards = "Boards"
         case collage = "Collages"
