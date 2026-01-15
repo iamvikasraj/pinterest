@@ -43,26 +43,26 @@ struct PinDetailSheet: View {
                             .padding(.horizontal, 10)
                             .padding(.top, Spacing.lg)
                             .opacity(isPresented ? 1 : 0)
-                    }
-                        .gesture(
-                            DragGesture(minimumDistance: 10)
-                                .onChanged { value in
-                                    // Only allow vertical drag for dismiss, ignore horizontal
-                                    if abs(value.translation.height) > abs(value.translation.width) {
-                                        dragHeight = value.translation.height
-                                    }
-                                }
-                                .onEnded { value in
-                                    // Only dismiss on vertical drag
-                                    if abs(value.translation.height) > 100 {
-                                        dismissView()
-                                    } else {
-                                        withAnimation {
-                                            dragHeight = 0
+                            .gesture(
+                                DragGesture(minimumDistance: 10)
+                                    .onChanged { value in
+                                        // Only allow vertical drag for dismiss, ignore horizontal
+                                        if abs(value.translation.height) > abs(value.translation.width) {
+                                            dragHeight = value.translation.height
                                         }
                                     }
-                                }
-                        )
+                                    .onEnded { value in
+                                        // Only dismiss on vertical drag
+                                        if abs(value.translation.height) > 100 {
+                                            dismissView()
+                                        } else {
+                                            withAnimation {
+                                                dragHeight = 0
+                                            }
+                                        }
+                                    }
+                            )
+                    }
                     
                     // Scrollable content below image
                     ScrollView(.vertical, showsIndicators: true) {

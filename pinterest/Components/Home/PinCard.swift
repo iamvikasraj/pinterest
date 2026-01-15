@@ -25,14 +25,14 @@ struct PinCard: View {
                     Image(pin.imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .background(Color(red: 0.73, green: 0.73, blue: 0.73))
+                        .background(AppColors.backgroundSecondary)
                         .cornerRadius(16)
                         .clipped()
                         .matchedGeometryEffect(id: pin.id.uuidString, in: namespace)
                 } else {
                     // Placeholder when image name is empty
                     Rectangle()
-                        .fill(Color(red: 0.73, green: 0.73, blue: 0.73))
+                        .fill(AppColors.backgroundSecondary)
                         .cornerRadius(16)
                 }
             }
@@ -63,6 +63,13 @@ struct PinCard: View {
     }
     
     private func loadImageAspectRatio() {
+        // Use pin's aspectRatio if available
+        if let pinAspectRatio = pin.aspectRatio {
+            aspectRatio = pinAspectRatio
+            return
+        }
+        
+        // Otherwise, load from image
         guard let image = UIImage(named: pin.imageName) else {
             aspectRatio = 1.5
             return

@@ -11,6 +11,7 @@ struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     let contentViewModel: ContentViewModel
     let pinImageNamespace: Namespace.ID
+    @Namespace private var underlineNamespace
     @State private var selectedSegment: HomeSegment = .all
     @State private var transitionDirection: TransitionDirection = .none
     
@@ -150,104 +151,104 @@ struct HomeView: View {
     
     private var octaviaSegmentContent: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.lg) {
-                // Octavia project specific content
-                Text("Octavia 2.0 Project")
-                    .font(Typography.Semantic.pageTitle)
-                    .padding(.horizontal, Spacing.lg)
-                    .padding(.top, Spacing.lg)
-                
-                HStack(alignment: .top, spacing: Spacing.sm) {
-                    // Left column
-                    VStack(spacing: Spacing.sm) {
-                        ForEach(Array(viewModel.pins.prefix(6).enumerated()).filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
-                            PinCard(
-                                pin: pin,
-                                namespace: pinImageNamespace,
-                                selectedPinId: contentViewModel.selectedPinId,
-                                onMoreTapped: {
-                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
-                                },
-                                onPinTapped: { pinId, imageName, frame in
-                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
-                                }
-                            )
-                        }
-                    }
-                    
-                    // Right column
-                    VStack(spacing: Spacing.sm) {
-                        ForEach(Array(viewModel.pins.prefix(6).enumerated()).filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
-                            PinCard(
-                                pin: pin,
-                                namespace: pinImageNamespace,
-                                selectedPinId: contentViewModel.selectedPinId,
-                                onMoreTapped: {
-                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
-                                },
-                                onPinTapped: { pinId, imageName, frame in
-                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
-                                }
-                            )
-                        }
+            HStack(alignment: .top, spacing: Spacing.xs) {
+                // Left column
+                VStack(spacing: Spacing.xs) {
+                    ForEach(dummyOctaviaPins.filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
+                        PinCard(
+                            pin: pin,
+                            namespace: pinImageNamespace,
+                            selectedPinId: contentViewModel.selectedPinId,
+                            onMoreTapped: {
+                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                            },
+                            onPinTapped: { pinId, imageName, frame in
+                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                            }
+                        )
                     }
                 }
-                .padding(.horizontal, Spacing.sm)
-                .padding(.vertical, Spacing.sm)
+                
+                // Right column
+                VStack(spacing: Spacing.xs) {
+                    ForEach(dummyOctaviaPins.filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
+                        PinCard(
+                            pin: pin,
+                            namespace: pinImageNamespace,
+                            selectedPinId: contentViewModel.selectedPinId,
+                            onMoreTapped: {
+                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                            },
+                            onPinTapped: { pinId, imageName, frame in
+                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                            }
+                        )
+                    }
+                }
             }
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.sm)
         }
         .scrollIndicators(.hidden)
     }
     
+    private var dummyOctaviaPins: [(offset: Int, element: Pin)] {
+        (0..<12).enumerated().map { index, _ in
+            // Random aspect ratio between 0.75 and 2.0 (typical Pinterest range)
+            let randomAspectRatio = Double.random(in: 0.75...2.0)
+            return (offset: index, element: Pin(imageName: "", title: "Octavia Pin \(index + 1)", aspectRatio: randomAspectRatio))
+        }
+    }
+    
     private var landscapeSegmentContent: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Spacing.lg) {
-                // Landscape specific content
-                Text("Landscape Thumbnails")
-                    .font(Typography.Semantic.pageTitle)
-                    .padding(.horizontal, Spacing.lg)
-                    .padding(.top, Spacing.lg)
-                
-                HStack(alignment: .top, spacing: Spacing.sm) {
-                    // Left column
-                    VStack(spacing: Spacing.sm) {
-                        ForEach(Array(viewModel.pins.suffix(9).enumerated()).filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
-                            PinCard(
-                                pin: pin,
-                                namespace: pinImageNamespace,
-                                selectedPinId: contentViewModel.selectedPinId,
-                                onMoreTapped: {
-                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
-                                },
-                                onPinTapped: { pinId, imageName, frame in
-                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
-                                }
-                            )
-                        }
-                    }
-                    
-                    // Right column
-                    VStack(spacing: Spacing.sm) {
-                        ForEach(Array(viewModel.pins.suffix(9).enumerated()).filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
-                            PinCard(
-                                pin: pin,
-                                namespace: pinImageNamespace,
-                                selectedPinId: contentViewModel.selectedPinId,
-                                onMoreTapped: {
-                                    contentViewModel.showImageOverlay(imageContent: pin.imageName)
-                                },
-                                onPinTapped: { pinId, imageName, frame in
-                                    contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
-                                }
-                            )
-                        }
+            HStack(alignment: .top, spacing: Spacing.xs) {
+                // Left column
+                VStack(spacing: Spacing.xs) {
+                    ForEach(dummyLandscapePins.filter { $0.offset % 2 == 0 }, id: \.element.id) { index, pin in
+                        PinCard(
+                            pin: pin,
+                            namespace: pinImageNamespace,
+                            selectedPinId: contentViewModel.selectedPinId,
+                            onMoreTapped: {
+                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                            },
+                            onPinTapped: { pinId, imageName, frame in
+                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                            }
+                        )
                     }
                 }
-                .padding(.horizontal, Spacing.sm)
-                .padding(.vertical, Spacing.sm)
+                
+                // Right column
+                VStack(spacing: Spacing.xs) {
+                    ForEach(dummyLandscapePins.filter { $0.offset % 2 == 1 }, id: \.element.id) { index, pin in
+                        PinCard(
+                            pin: pin,
+                            namespace: pinImageNamespace,
+                            selectedPinId: contentViewModel.selectedPinId,
+                            onMoreTapped: {
+                                contentViewModel.showImageOverlay(imageContent: pin.imageName)
+                            },
+                            onPinTapped: { pinId, imageName, frame in
+                                contentViewModel.showPinDetail(pinId: pinId, imageName: imageName, sourceFrame: frame)
+                            }
+                        )
+                    }
+                }
             }
+            .padding(.horizontal, Spacing.sm)
+            .padding(.vertical, Spacing.sm)
         }
         .scrollIndicators(.hidden)
+    }
+    
+    private var dummyLandscapePins: [(offset: Int, element: Pin)] {
+        (0..<12).enumerated().map { index, _ in
+            // Random aspect ratio between 0.75 and 2.0 (typical Pinterest range)
+            let randomAspectRatio = Double.random(in: 0.75...2.0)
+            return (offset: index, element: Pin(imageName: "", title: "Landscape Pin \(index + 1)", aspectRatio: randomAspectRatio))
+        }
     }
     
     private var segmentNavigation: some View {
@@ -266,7 +267,9 @@ struct HomeView: View {
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 selectedSegment = segment
                             }
-                        }
+                        },
+                        namespace: underlineNamespace,
+                        tabId: segment.rawValue
                     )
                 }
             }
