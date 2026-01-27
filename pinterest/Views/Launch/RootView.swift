@@ -16,13 +16,13 @@ struct RootView: View {
             // Main Content
             ContentView()
                 .opacity(showSplash ? 0 : 1)
-                .animation(.easeInOut(duration: 0.5), value: showSplash)
+                .animation(.easeInOut(duration: 0.3), value: showSplash)
             
             // Splash Screen
             if showSplash {
                 LaunchScreenView()
                     .opacity(splashOpacity)
-                    .animation(.easeOut(duration: 0.5), value: splashOpacity)
+                    .animation(.easeOut(duration: 0.3), value: splashOpacity)
             }
         }
         .onAppear {

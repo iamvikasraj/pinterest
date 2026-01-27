@@ -27,7 +27,7 @@ struct BottomOverlayView: View {
                         .frame(width: 80)
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
-                        .offset(y: -300)
+                        .offset(y: -320)
                         .zIndex(1)
                         .scaleEffect(isPresented ? 1.0 : 0.0)
                         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPresented)
@@ -46,7 +46,8 @@ struct BottomOverlayView: View {
                         OverlayOptionRow(iconName: "exclamationmark.triangle", title: "Report")
                     }
                     .padding(.top, 40)
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 40)
+                    .padding(.horizontal, 30)
                 }
                 .frame(maxWidth: .infinity)
                 .background(Color.white)
