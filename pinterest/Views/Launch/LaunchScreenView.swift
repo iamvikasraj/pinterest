@@ -171,4 +171,3 @@ struct LaunchScreenView: View {
     }
     return PreviewWrapper()
 }
-
