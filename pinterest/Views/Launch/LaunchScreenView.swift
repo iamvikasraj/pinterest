@@ -59,18 +59,18 @@ private struct RiveSplashContent: View {
 
         var body: some View {
             ZStack {
-                VStack {
-                    LaunchScreenView()
-                        .id(restartKey)
+                LaunchScreenView()
+                    .id(restartKey)
 
+                VStack {
+                    Spacer()
                     Button("Restart Animation") {
                         restartKey += 1
                     }
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    .padding(.top, 50)
+                    .glassEffect()
+                    .ignoresSafeArea()
+                    
                 }
             }
         }
