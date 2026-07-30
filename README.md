@@ -2,6 +2,12 @@
 
 A Pinterest-style iOS app built with SwiftUI using MVVM architecture.
 
+## Why This Project
+
+Most design work stops at mockups. This project is a deliberate counter-example: a Pinterest-style app built as a **native SwiftUI prototype that behaves like a real product** — real physics, real haptics, and real motion (via Rive) — so ideas can be validated before any production code is written.
+
+It reflects a way of working where the line between prototype and production has blurred: not just prototyping in code, but shipping it. Native gestures, animated pin-to-detail transitions, a Rive-powered splash, and a centralized design system stand in for the philosophy behind it — faster ships, fewer surprises at handoff.
+
 ## Project Structure
 
 ```
@@ -114,3 +120,11 @@ pinterest/
 ## Documentation
 
 See `Documentation/ProjectOverview.md` for detailed information.
+
+## About the Author
+
+Built by **Vikas Raj Yadav**, a mobile-first design technologist with a computer science background and 10+ years in Indian fintech (Paytm, HDFC Bank, ET Money), currently Staff Product Designer at Loop Health — where he scaled Paytm Postpaid to 1M+ users in six months and led design systems and UX across heavily regulated fintech products.
+
+Self-taught in product design since 2016, he's run through nearly every prototype-test loop there is (Sketch, Principle, Flinto, Framer X, Figma, After Effects, production code), and since 2021–22 has been building native iOS in real SwiftUI. Motion is second nature, but it's one lever inside a full product design practice — not the whole job.
+
+He's also a Rive Ambassador and is building [designengineer.ing](https://designengineer.ing), a home for designers who code.
