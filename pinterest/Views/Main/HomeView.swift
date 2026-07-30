@@ -32,6 +32,9 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            // Top Header (logo + create / chat actions)
+            headerView
+
             // Top Segment Navigation
             segmentNavigation
             
@@ -152,7 +155,8 @@ struct HomeView: View {
                 }
             }
             .padding(.horizontal, Spacing.sm)
-            .padding(.vertical, Spacing.sm)
+            .padding(.top, Spacing.sm)
+            .padding(.bottom, 80)
         }
         .scrollIndicators(.hidden)
     }
@@ -203,7 +207,8 @@ struct HomeView: View {
                 }
             }
             .padding(.horizontal, Spacing.sm)
-            .padding(.vertical, Spacing.sm)
+            .padding(.top, Spacing.sm)
+            .padding(.bottom, 80)
         }
         .scrollIndicators(.hidden)
     }
@@ -278,7 +283,8 @@ struct HomeView: View {
                 }
             }
             .padding(.horizontal, Spacing.sm)
-            .padding(.vertical, Spacing.sm)
+            .padding(.top, Spacing.sm)
+            .padding(.bottom, 80)
         }
         .scrollIndicators(.hidden)
     }
@@ -307,6 +313,43 @@ struct HomeView: View {
         }
     }
     
+    private var headerView: some View {
+        HStack(spacing: Spacing.sm) {
+            // Logo
+            Image("pin-black")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 26)
+
+            Spacer()
+
+            HStack(spacing: 24) {
+                // Create
+                Image("start")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.black)
+                    .onTapGesture {
+                        contentViewModel.showCreateSheet()
+                    }
+
+                // Chat
+                Image("chat")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 30, height: 30)
+                    .onTapGesture {
+                        contentViewModel.selectTab(.chat)
+                    }
+            }
+        }
+        .padding(.horizontal, Spacing.lg)
+        .padding(.top, 18)
+        .padding(.bottom, 16)
+        .background(.white)
+    }
+
     private var segmentNavigation: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Spacing.xl) {
@@ -331,7 +374,8 @@ struct HomeView: View {
             }
             .padding(.horizontal, Spacing.lg)
         }
-        .padding(.vertical, Spacing.md)
+        .padding(.top, Spacing.md)
+        .padding(.bottom, Spacing.md + 2)
         .background(.white)
     }
 }

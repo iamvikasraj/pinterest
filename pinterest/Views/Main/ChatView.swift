@@ -19,9 +19,9 @@ struct ChatView: View {
                     Text("Inbox")
                         .font(Typography.Semantic.pageTitle)
                         .foregroundStyle(.black)
-                    
+
                     Spacer()
-                    
+
                     Button(action: {
                         print("New message tapped")
                     }) {

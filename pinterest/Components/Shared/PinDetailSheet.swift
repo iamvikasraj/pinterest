@@ -13,117 +13,159 @@ struct PinDetailSheet: View {
     let pinId: String
     let imageName: String
     let sourceFrame: CGRect
+    /// Retained for call-site compatibility. The expand animation no longer
+    /// uses matchedGeometryEffect (see note below), so this is currently unused.
     let namespace: Namespace.ID
-    @State private var animationProgress: CGFloat = 0
+
+    // Drives the present/dismiss animation: 0 = collapsed at the card, 1 = full screen.
+    @State private var progress: CGFloat = 0
+    // Vertical drag offset for swipe-to-dismiss.
     @State private var dragHeight: CGFloat = 0
-    
+
     var body: some View {
         GeometryReader { geometry in
-            ZStack {
-                // Background
-                Color.white
+            ZStack(alignment: .top) {
+                // Solid background fades in with the transition.
+                AppColors.backgroundPrimary
                     .ignoresSafeArea()
-                    .opacity(isPresented ? 1 : 0)
-                    .onTapGesture {
-                        if isPresented {
-                            dismissView()
-                        }
-                    }
-                
+                    .opacity(backgroundOpacity)
+                    .onTapGesture { dismiss() }
+
+                // Foreground: full-width image + scrollable details.
                 VStack(spacing: 0) {
-                    // Pin Image with matched geometry effect - full width with 10px padding
-                    // Place image outside ScrollView for better matched geometry effect
-                    if !imageName.isEmpty {
-                        Image(imageName)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: geometry.size.width - 20)
-                            .cornerRadius(16)
-                            .matchedGeometryEffect(id: pinId, in: namespace, isSource: false)
-                            .padding(.horizontal, 10)
-                            .padding(.top, Spacing.lg)
-                            .opacity(isPresented ? 1 : 0)
-                            .gesture(
-                                DragGesture(minimumDistance: 10)
-                                    .onChanged { value in
-                                        // Only allow vertical drag for dismiss, ignore horizontal
-                                        if abs(value.translation.height) > abs(value.translation.width) {
-                                            dragHeight = value.translation.height
-                                        }
-                                    }
-                                    .onEnded { value in
-                                        // Only dismiss on vertical drag
-                                        if abs(value.translation.height) > 100 {
-                                            dismissView()
-                                        } else {
-                                            withAnimation {
-                                                dragHeight = 0
-                                            }
-                                        }
-                                    }
-                            )
-                    }
-                    
-                    // Scrollable content below image
-                    ScrollView(.vertical, showsIndicators: true) {
-                        VStack(alignment: .leading, spacing: Spacing.lg) {
-                            // Pin Details
-                            VStack(alignment: .leading, spacing: Spacing.md) {
-                                Text("Pin Details")
-                                    .font(Typography.Semantic.pageTitle)
-                                    .foregroundColor(AppColors.textPrimary)
-                                
-                                Text("Pin ID: \(pinId)")
-                                    .font(Typography.Body.medium)
-                                    .foregroundColor(AppColors.textSecondary)
-                                
-                                Text("This is a detailed view of the pin. You can add more information here like description, comments, related pins, etc.")
-                                    .font(Typography.Body.medium)
-                                    .foregroundColor(AppColors.textPrimary)
-                                    .lineSpacing(4)
-                            }
+                    pinImage(width: geometry.size.width)
+                        .padding(.horizontal, Spacing.sm)
+                        .padding(.top, geometry.safeAreaInsets.top + Spacing.sm)
+                        .gesture(dismissDrag)
+
+                    ScrollView(.vertical, showsIndicators: false) {
+                        details
                             .padding(.horizontal, Spacing.lg)
-                            .opacity(animationProgress)
-                        }
-                        .padding(.bottom, Spacing.xxl)
+                            .padding(.top, Spacing.xl)
+                            .padding(.bottom, Spacing.xxl)
+                            .opacity(progress)
                     }
-                    .opacity(isPresented ? 1 : 0)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .offset(y: dragHeight)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-                // Close button
-                VStack {
-                    HStack {
-                        Spacer()
-                        Button(action: dismissView) {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(.white)
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
-                        }
-                        .padding(.top, 50)
-                        .padding(.trailing, 20)
-                    }
-                    Spacer()
-                }
-                .opacity(isPresented ? 1 : 0)
+
+                closeButton(topInset: geometry.safeAreaInsets.top)
             }
+            // Grow from the tapped card's position for a Pinterest-style zoom.
+            .scaleEffect(0.88 + 0.12 * progress, anchor: zoomAnchor(in: geometry.size))
+            .opacity(progress)
         }
-        .onAppear {
-            // Animate details fade-in, but let matched geometry handle image transition
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.75).delay(0.2)) {
-                animationProgress = 1.0
+        .onChange(of: isPresented) { _, presented in
+            if presented { present() } else { collapse() }
+        }
+        .onAppear { if isPresented { present() } }
+    }
+
+    // MARK: - Subviews
+
+    private func pinImage(width: CGFloat) -> some View {
+        Group {
+            if !imageName.isEmpty {
+                Image(imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .background(AppColors.backgroundSecondary)
+                    .clipShape(RoundedRectangle(cornerRadius: CornerRadius.large))
             }
         }
     }
-    
-    private func dismissView() {
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-            animationProgress = 0
+
+    private var details: some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            Text("Pin Details")
+                .font(Typography.Semantic.pageTitle)
+                .foregroundColor(AppColors.textPrimary)
+
+            Text("Pin ID: \(pinId)")
+                .font(Typography.Body.medium)
+                .foregroundColor(AppColors.textSecondary)
+
+            Text("This is a detailed view of the pin. You can add more information here like description, comments, related pins, etc.")
+                .font(Typography.Body.medium)
+                .foregroundColor(AppColors.textPrimary)
+                .lineSpacing(4)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func closeButton(topInset: CGFloat) -> some View {
+        HStack {
+            Spacer()
+            Button(action: dismiss) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 30))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(.white, Color.black.opacity(0.35))
+            }
+            .padding(.trailing, Spacing.lg)
+        }
+        .padding(.top, topInset + Spacing.sm)
+        .opacity(progress)
+    }
+
+    // MARK: - Gestures
+
+    private var dismissDrag: some Gesture {
+        DragGesture(minimumDistance: 10)
+            .onChanged { value in
+                // Only respond to a downward-ish vertical drag.
+                if value.translation.height > 0,
+                   abs(value.translation.height) > abs(value.translation.width) {
+                    dragHeight = value.translation.height
+                }
+            }
+            .onEnded { value in
+                if value.translation.height > 120 {
+                    dismiss()
+                } else {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        dragHeight = 0
+                    }
+                }
+            }
+    }
+
+    // MARK: - Animation helpers
+
+    // Background dims out as the sheet is dragged away, so it feels tied to the gesture.
+    private var backgroundOpacity: CGFloat {
+        let dragFade = max(0, 1 - (dragHeight / 400))
+        return progress * dragFade
+    }
+
+    private func zoomAnchor(in size: CGSize) -> UnitPoint {
+        guard sourceFrame != .zero, size.width > 0, size.height > 0 else { return .center }
+        return UnitPoint(
+            x: min(max(sourceFrame.midX / size.width, 0), 1),
+            y: min(max(sourceFrame.midY / size.height, 0), 1)
+        )
+    }
+
+    private func present() {
+        dragHeight = 0
+        withAnimation(.spring(response: 0.45, dampingFraction: 0.85)) {
+            progress = 1
+        }
+    }
+
+    private func collapse() {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            progress = 0
+            dragHeight = 0
+        }
+    }
+
+    private func dismiss() {
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            progress = 0
+            dragHeight = 0
             isPresented = false
         }
     }
 }
-

@@ -24,19 +24,19 @@ class SearchViewModel: ObservableObject {
     }
     
     func loadData() {
-        isLoading = true
-        DispatchQueue.main.async {
-            self.carouselItems = self.dataService.fetchCarouselItems()
-            self.featuredBoards = self.dataService.fetchFeaturedBoards()
-            self.searchSections = self.dataService.fetchSearchSections()
-            
-            // Ensure currentCarouselPage is within bounds
-            if !self.carouselItems.isEmpty && self.currentCarouselPage >= self.carouselItems.count {
-                self.currentCarouselPage = 0
-            }
-            
-            self.isLoading = false
+        // Load synchronously so the first rendered frame is already populated.
+        // Dispatching to a later runloop tick left the carousel empty on frame one,
+        // causing a visible layout pop each time the Search tab appeared.
+        carouselItems = dataService.fetchCarouselItems()
+        featuredBoards = dataService.fetchFeaturedBoards()
+        searchSections = dataService.fetchSearchSections()
+
+        // Ensure currentCarouselPage is within bounds
+        if !carouselItems.isEmpty && currentCarouselPage >= carouselItems.count {
+            currentCarouselPage = 0
         }
+
+        isLoading = false
     }
     
     func updateScrollOffset(_ offset: CGFloat) {

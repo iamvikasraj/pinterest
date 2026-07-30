@@ -10,71 +10,59 @@ import SwiftUI
 // MARK: - Bottom Navigation
 struct BottomNavigationView: View {
     @ObservedObject var viewModel: ContentViewModel
-    
+
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(spacing: Spacing.md) {
             // Home Tab
-            TabButton(
-                imageName: viewModel.selectedTab == .home ? "home-active" : "home",
-                isSelected: viewModel.selectedTab == .home,
-                action: { viewModel.selectTab(.home) }
-            )
-            Spacer()
-            
+            FloatingNavButton(isSelected: viewModel.selectedTab == .home) {
+                Image(viewModel.selectedTab == .home ? "home-active" : "home")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+            } action: {
+                viewModel.selectTab(.home)
+            }
+
             // Search Tab
-            TabButton(
-                imageName: viewModel.selectedTab == .search ? "search-active" : "search",
-                isSelected: viewModel.selectedTab == .search,
-                action: { viewModel.selectTab(.search) }
-            )
-            Spacer()
-            
-            // Create Tab
-            TabButton(
-                imageName: viewModel.selectedTab == .create ? "start-active" : "start",
-                isSelected: viewModel.selectedTab == .create,
-                action: { viewModel.showCreateSheet() }
-            )
-            Spacer()
-            
-            // Chat Tab
-            TabButton(
-                imageName: viewModel.selectedTab == .chat ? "chat-active" : "chat",
-                isSelected: viewModel.selectedTab == .chat,
-                action: { viewModel.selectTab(.chat) }
-            )
-            Spacer()
-            
+            FloatingNavButton(isSelected: viewModel.selectedTab == .search) {
+                Image(viewModel.selectedTab == .search ? "search-active" : "search")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
+            } action: {
+                viewModel.selectTab(.search)
+            }
+
             // Profile Tab
-            UserProfileImage()
-                .onTapGesture {
-                    viewModel.selectTab(.profile)
-                }
+            FloatingNavButton(isSelected: viewModel.selectedTab == .profile) {
+                Image("profile")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 32, height: 32)
+                    .background(Color(red: 0.96, green: 0, blue: 0))
+                    .clipShape(Circle())
+            } action: {
+                viewModel.selectTab(.profile)
+            }
         }
-        .padding(.horizontal, 60)
-        .padding(.top, 10)
-        .padding(.bottom, 10)
-        .frame(maxWidth: .infinity, alignment: .center)
-        .background(.white)
-        .shadow(color: .gray.opacity(0.1), radius: 10, x: 0, y: -2)
     }
 }
 
-// MARK: - Tab Button
-struct TabButton: View {
-    let imageName: String
+// MARK: - Floating Nav Button
+struct FloatingNavButton<Content: View>: View {
     let isSelected: Bool
+    @ViewBuilder let content: Content
     let action: () -> Void
-    
+
     var body: some View {
-        Image(imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 28, height: 28)
+        content
+            .frame(width: 54, height: 54)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .shadow(color: .black.opacity(0.12), radius: 12, x: 0, y: 4)
+            .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             .onTapGesture {
                 action()
             }
     }
 }
-
-

@@ -14,22 +14,22 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                VStack(spacing: 0) {
-                    // Main content area with NavigationStack
-                    NavigationStack(path: $viewModel.navigationPath) {
-                        TabContentView(
-                            selectedTab: viewModel.selectedTab,
-                            viewModel: viewModel,
-                            pinImageNamespace: pinImageNamespace
-                        )
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .navigationDestination(for: Route.self) { route in
-                            destinationView(for: route, viewModel: viewModel)
-                        }
+                // Main content area with NavigationStack
+                NavigationStack(path: $viewModel.navigationPath) {
+                    TabContentView(
+                        selectedTab: viewModel.selectedTab,
+                        viewModel: viewModel,
+                        pinImageNamespace: pinImageNamespace
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .navigationDestination(for: Route.self) { route in
+                        destinationView(for: route, viewModel: viewModel)
                     }
-                    
-                    // Bottom Navigation
+                }
+                // Floating Bottom Navigation
+                .overlay(alignment: .bottom) {
                     BottomNavigationView(viewModel: viewModel)
+                        .padding(.bottom, Spacing.sm)
                 }
                 
                 // Bottom Overlay - Keep in hierarchy for dismissal animation
@@ -115,29 +115,46 @@ struct TabContentView: View {
     let selectedTab: Tab
     let viewModel: ContentViewModel
     let pinImageNamespace: Namespace.ID
-    
+
     var body: some View {
-        switch selectedTab {
-        case .home:
-            HomeView(viewModel: viewModel, pinImageNamespace: pinImageNamespace)
-        case .search:
-            SearchView(onNavigate: { route in
-                viewModel.navigate(to: route)
-            })
-        case .create:
-            CreateView()
-        case .chat:
-            ChatView(onNavigate: { route in
-                viewModel.navigate(to: route)
-            })
-        case .profile:
-            ProfileView(
-                onNavigate: { route in
+        // Keep every tab alive in the hierarchy and toggle visibility instead of
+        // rebuilding via a `switch`. Rebuilding destroyed each tab's @StateObject on
+        // every switch, which reloaded data and reset scroll state (the Search glitch).
+        ZStack {
+            tab(.home) {
+                HomeView(viewModel: viewModel, pinImageNamespace: pinImageNamespace)
+            }
+            tab(.search) {
+                SearchView(onNavigate: { route in
                     viewModel.navigate(to: route)
-                },
-                contentViewModel: viewModel
-            )
+                })
+            }
+            tab(.create) {
+                CreateView()
+            }
+            tab(.chat) {
+                ChatView(onNavigate: { route in
+                    viewModel.navigate(to: route)
+                })
+            }
+            tab(.profile) {
+                ProfileView(
+                    onNavigate: { route in
+                        viewModel.navigate(to: route)
+                    },
+                    contentViewModel: viewModel
+                )
+            }
         }
+    }
+
+    @ViewBuilder
+    private func tab<Content: View>(_ tab: Tab, @ViewBuilder content: () -> Content) -> some View {
+        let isActive = selectedTab == tab
+        content()
+            .opacity(isActive ? 1 : 0)
+            .allowsHitTesting(isActive)
+            .zIndex(isActive ? 1 : 0)
     }
 }
 

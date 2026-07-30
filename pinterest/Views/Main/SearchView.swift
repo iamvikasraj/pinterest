@@ -74,9 +74,10 @@ struct SearchView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(
-                    // White background that fades in when scrolling
+                    // White background that fades in once the user scrolls past the hero.
                     Color.white
                         .opacity(scrollOffset >= 250 ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.2), value: scrollOffset >= 250)
                 )
                 
             }

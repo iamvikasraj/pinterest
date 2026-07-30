@@ -28,7 +28,6 @@ struct PinCard: View {
                         .background(AppColors.backgroundSecondary)
                         .cornerRadius(16)
                         .clipped()
-                        .matchedGeometryEffect(id: pin.id.uuidString, in: namespace)
                 } else {
                     // Placeholder when image name is empty
                     Rectangle()
