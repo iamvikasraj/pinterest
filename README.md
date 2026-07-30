@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/32775551-b357-47a9-8fc1-c06b294e8879
+
 # Pinterest iOS App
 
 A Pinterest-style iOS app built with SwiftUI using MVVM architecture.
