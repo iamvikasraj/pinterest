@@ -7,9 +7,10 @@ A Pinterest-style iOS app built with SwiftUI using MVVM architecture.
 ```
 pinterest/
 │
-├── Core/                          # App entry & main container
-│   ├── pinterestApp.swift         # @main entry point
-│   └── ContentView.swift          # Main view (tabs, navigation, sheets)
+├── Core/                          # App entry
+│   └── pinterestApp.swift         # @main entry point
+│
+├── ContentView.swift              # Main container (tabs, navigation, sheets)
 │
 ├── Views/                         # Screen-level views
 │   ├── Main/                      # Main tab screens
@@ -80,7 +81,8 @@ pinterest/
 │
 ├── Resources/
 │   ├── LaunchScreen.storyboard
-│   └── pinterest-splash.riv       # Rive splash animation asset
+│   ├── pinterest-splash.riv       # Rive splash animation asset
+│   └── README_Rive.md             # Rive integration notes
 │
 └── Documentation/
     ├── ProjectOverview.md
